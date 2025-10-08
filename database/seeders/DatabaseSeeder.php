@@ -19,11 +19,5 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
-
-        // Seed hotel room types and rooms
-        $this->call([
-            RoomTypeSeeder::class,
-            RoomSeeder::class,
-        ]);
     }
 }

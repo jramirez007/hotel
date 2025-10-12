@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Room extends Model
 {
@@ -13,18 +14,19 @@ class Room extends Model
         'room_type_id',
         'room_number',
         'floor',
-        'status',
+        'is_available',
     ];
 
     protected $casts = [
         'room_type_id' => 'integer',
         'floor' => 'integer',
+        'is_available' => 'boolean',
     ];
 
     /**
      * Get the room type that owns the room.
      */
-    public function roomType()
+    public function roomType(): BelongsTo
     {
         return $this->belongsTo(RoomType::class);
     }

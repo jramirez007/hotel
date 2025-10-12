@@ -15,10 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->decimal('price_per_night', 10, 2);
-            $table->integer('capacity'); // Number of guests
-            $table->integer('number_of_beds');
-            $table->json('amenities')->nullable();
+            $table->decimal('base_price', 8, 2);
+            $table->integer('capacity')->default(2);
             $table->timestamps();
         });
     }

@@ -20,38 +20,39 @@ class RoomSeeder extends Seeder
             return;
         }
 
-        $roomNumber = 100;
+        // Define hotel structure: 5 floors, 10 rooms per floor
+        $floors = 5;
+        $roomsPerFloor = 10;
 
-        foreach ($roomTypes as $index => $roomType) {
-            // Create 10-20 rooms for each room type
-            $roomCount = fake()->numberBetween(10, 20);
+        $roomCounter = 0;
+        $totalRooms = $floors * $roomsPerFloor;
 
-            for ($i = 0; $i < $roomCount; $i++) {
-                // Calculate floor based on room number
-                $floor = (int) ($roomNumber / 100);
+        for ($floor = 1; $floor <= $floors; $floor++) {
+            for ($roomOnFloor = 1; $roomOnFloor <= $roomsPerFloor; $roomOnFloor++) {
+                // Room number: first digit is floor, next two digits are room number on that floor
+                // e.g., Floor 1: 101, 102, ..., 110; Floor 2: 201, 202, ..., 210
+                $roomNumber = ($floor * 100) + $roomOnFloor;
+
+                // Assign random room type
+                $randomRoomType = $roomTypes->random();
+
+                // 90% of rooms should be available
+                $isAvailable = $roomCounter < ($totalRooms * 0.9);
 
                 Room::create([
-                    'room_type_id' => $roomType->id,
+                    'room_type_id' => $randomRoomType->id,
                     'room_number' => (string) $roomNumber,
-                    'floor' => $floor > 0 ? $floor : 1,
-                    'status' => fake()->randomElement([
-                        'available',
-                        'available',
-                        'available',
-                        'available',
-                        'available',
-                        'available', // More likely to be available
-                        'occupied',
-                        'occupied',
-                        'maintenance',
-                        'cleaning',
-                    ]),
+                    'floor' => $floor,
+                    'is_available' => $isAvailable,
                 ]);
 
-                $roomNumber++;
+                $roomCounter++;
             }
         }
 
         $this->command->info('Rooms created successfully!');
+        $this->command->info("Total rooms: {$totalRooms}");
+        $this->command->info("Available rooms: " . ($totalRooms * 0.9));
+        $this->command->info("Unavailable rooms: " . ($totalRooms * 0.1));
     }
 }

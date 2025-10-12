@@ -24,7 +24,7 @@ class RoomFactory extends Factory
             'room_type_id' => RoomType::factory(),
             'room_number' => fake()->unique()->numberBetween(100, 999),
             'floor' => fake()->numberBetween(1, 10),
-            'status' => fake()->randomElement(['available', 'occupied', 'maintenance', 'cleaning']),
+            'is_available' => fake()->boolean(90), // 90% chance of being available
         ];
     }
 
@@ -34,17 +34,17 @@ class RoomFactory extends Factory
     public function available(): static
     {
         return $this->state(fn(array $attributes) => [
-            'status' => 'available',
+            'is_available' => true,
         ]);
     }
 
     /**
-     * Indicate that the room is occupied.
+     * Indicate that the room is not available.
      */
-    public function occupied(): static
+    public function unavailable(): static
     {
         return $this->state(fn(array $attributes) => [
-            'status' => 'occupied',
+            'is_available' => false,
         ]);
     }
 }

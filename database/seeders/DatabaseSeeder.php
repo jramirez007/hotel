@@ -13,17 +13,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed room types first
-        $this->call([
-            RoomTypeSeeder::class,
-            RoomSeeder::class,
-        ]);
-
         // User::factory(10)->create();
 
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+        ]);
+
+        // Seed room types first, then rooms
+        $this->call([
+            RoomTypeSeeder::class,
+            RoomSeeder::class,
         ]);
     }
 }

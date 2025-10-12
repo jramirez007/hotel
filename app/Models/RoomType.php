@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class RoomType extends Model
 {
@@ -12,23 +13,19 @@ class RoomType extends Model
     protected $fillable = [
         'name',
         'description',
-        'price_per_night',
+        'base_price',
         'capacity',
-        'number_of_beds',
-        'amenities',
     ];
 
     protected $casts = [
-        'price_per_night' => 'decimal:2',
+        'base_price' => 'decimal:2',
         'capacity' => 'integer',
-        'number_of_beds' => 'integer',
-        'amenities' => 'array',
     ];
 
     /**
-     * Get the rooms for the room type.
+     * Get the rooms for this room type.
      */
-    public function rooms()
+    public function rooms(): HasMany
     {
         return $this->hasMany(Room::class);
     }
